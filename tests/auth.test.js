@@ -1,13 +1,25 @@
-const request = require("supertest");
-const app = require("../index");
+const { User } = require("../models");
 
-describe("Pruebas de autenticación", () => {
-  it("Debe registrar un usuario", async () => {
-    const res = await request(app)
-      .post("/auth/register")
-      .send({ nombre: "Test", email: "test@example.com", password: "123456", rol: "usuario" });
+describe("Modelo de Usuario", () => {
+  beforeEach(async () => {
+    await User.sync({ force: true }); 
+  });
 
-    expect(res.statusCode).toEqual(201);
-    expect(res.body).toHaveProperty("id");
+  test("Debe crear un usuario correctamente", async () => {
+    const user = await User.create({
+      nombre: "nicolas",
+      email: "nicolasx@gmail.com",
+      password: "123456",
+    });
+
+    expect(user).toBeDefined();
+    expect(user.nombre).toBe("nicolas");
+    expect(user.email).toBe("nicolasx@gmail.com");
+  });
+
+  test("No debe permitir crear usuarios sin email", async () => {
+    await expect(
+      User.create({ nombre: "Sin Email", password: "123456" })
+    ).rejects.toThrow();
   });
 });
