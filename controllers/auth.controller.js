@@ -26,12 +26,13 @@ const register = async (req, res) => {
         })
 
         return res.status(201).json({
+            state:true,
             message: `Usuario ${message.createdSuccess}`,
             user
         })
     } catch (error) {
         console.error(`${message.errorInserting} Usuario : ${error}`)
-        return res.status(500).json({ error: `${message.errorServe} erro ${error}` })
+        return res.status(500).json({   state:false ,error: `${message.errorServe} erro ${error}` })
     }
 };
 /**
@@ -45,16 +46,16 @@ const login = async (req, res) => {
         const { email, password } = req.body;
         const user = await existingUser(email);
         if (!user) {
-            return res.status(401).json({ error: message.credentialError });
+            return res.status(401).json( {  state:false , error: message.credentialError });
         }
         // const hashedPassword = await bcrypt.hash(password, 10);
         const passwordMatch = await bcrypt.compare(password, user.password);
 
         if (!passwordMatch) return res.status(401).json({ error: message.credentialError });
         const token = jwt.sign({ id: user.id, rol: user.rol }, process.env.JWT_SECRET, { expiresIn: "1h" });
-        res.json({ token });
+        res.json({  state:true ,token });
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        res.status(500).json({  state:false, error: error.message });
     }
 };
 /**
