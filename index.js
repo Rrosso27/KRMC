@@ -1,17 +1,20 @@
 const express = require("express");
 const cors = require("cors");
 require("dotenv").config();
+const employeeRoutes = require("./routes/employee.routes")
 const authRoutes = require("./routes/auth.routes");
 const userRoutes = require("./routes/user.routes");
 const sequelize = require('./config/db');
 const app = express();
-const User = require('./models/user')(sequelize);
+
 
 app.use(cors());
 app.use(express.json());
 
-app.use("/auth", authRoutes);
-app.use("/users", userRoutes);
+app.use("/api/auth", authRoutes);
+app.use("/api/users", userRoutes);
+app.use("/api/employeeRoutes", employeeRoutes);
+
 
 sequelize.sync({ force: true }) // Cambia a true si quieres recrear la tabla
 .then(() => console.log('Base de datos sincronizada'))
