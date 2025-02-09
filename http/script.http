@@ -1,0 +1,98 @@
+@url = http://localhost:5000/api/
+//Genera un token
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sIjoiYWRtaW4iLCJpYXQiOjE3MzkxNDE1MDksImV4cCI6MTczOTE0NTEwOX0.1uDVmBcxdgAiDYg2a3I55wjZoJoo6oUjQjmpwmaTjts
+
+### Login a user
+POST {{url}}auth/login HTTP/1.1
+content-type: application/json
+
+{
+    "email":"nicolas@gmail.com",
+    "password":"12345678"
+}
+
+### Registro de usuario 
+POST {{url}}auth/register HTTP/1.1
+content-type: application/json
+
+{
+    "nombre":"nicolas2",
+    "email":"nicola2s@gmail.com",
+    "password":"12345678",
+    "rol": "admin"
+}
+### store employee
+POST {{url}}employeeRoutes/ HTTP/1.1
+token: {{token}}
+content-type: application/json
+
+{
+    "fechaIngreso": "07-02-2025",
+    "nombre": "luiz",
+    "salario": 1500000
+}
+
+### Update employee
+PUT {{url}}employeeRoutes/ HTTP/1.1
+token: {{token}}
+content-type: application/json
+
+{
+    "fechaIngreso": "08-02-2025",
+    "nombre": "marta",
+    "salario": 1500000
+}
+
+#### GetById Employee 
+GET  {{url}}employeeRoutes/1 HTTP/1.1
+token: {{token}}
+content-type: application/json
+
+### Get Employees
+GET  {{url}}employeeRoutes/ HTTP/1.1
+token: {{token}}
+content-type: application/json
+
+#### application store  
+POST {{url}}applicationRoutes/ HTTP/1.1
+token: {{token}}
+content-type: application/json
+
+{
+    "codigo":"BjdEWQE15/556",
+    "descripcion":"EQWE",
+    "resumen":"ejemEQWEplo2",
+    "idEmployee":2
+}
+
+#### application GET  
+GET  {{url}}applicationRoutes/ HTTP/1.1
+token: {{token}}
+content-type: application/json
+
+#### application GET  
+GET  {{url}}applicationRoutes/ HTTP/1.1
+token: {{token}}
+content-type: application/json
+
+#### application GETByID
+GET  {{url}}applicationRoutes/1 HTTP/1.1
+token: {{token}}
+content-type: application/json
+
+#### application Update
+PUT   {{url}}applicationRoutes/1 HTTP/1.1
+token: {{token}}
+content-type: application/json
+
+{
+    "codigo":"BjdEWQE15/5536",
+    "descripcion":"EQWE",
+    "resumen":"ejemEQWEplo2",
+    "idEmployee":2
+}
+
+### application Delete 
+DELETE  {{url}}applicationRoutes/1 HTTP/1.1
+token: {{token}}
+content-type: application/json
