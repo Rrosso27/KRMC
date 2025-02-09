@@ -1,23 +1,31 @@
-version: '3.8'
 services:
-  app:
-    build: .
-    ports:
-      - "5000:5000"
-    depends_on:
-      - db
-    environment:
-
-      DB_HOST: db
-      DB_USER: root
-      DB_PASSWORD: admin123
-      DB_NAME: prueba
-  db:
-    image: mysql:5.7
+  mysql:
+    image: mysql:8
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: admin123
-      MYSQL_DATABASE: prueba
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: kack
+      MYSQL_USER: nicolas
+      MYSQL_PASSWORD: nicolas12345
     ports:
       - "3306:3306"
-  
+    networks:
+      - mi_red
+
+  api:
+    build: .
+    depends_on:
+      - mysql
+    environment:
+      DB_HOST: mysql  # ¡Usa el nombre del servicio, NO la IP!
+      DB_USER: nicolas
+      DB_PASSWORD: nicolas12345
+      DB_NAME: kack
+    ports:
+      - "5000:5000"
+    networks:
+      - mi_red
+
+networks:
+  mi_red:
+    driver: bridge

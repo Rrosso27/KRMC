@@ -148,8 +148,6 @@ const validation = (req, res) => {
     }
     if (!salario) {
         return res.status(400).json({ state: false, error: `salario ${message.requireData}` });
-    } else if (typeof salario !== 'number') {
-        return res.status(400).json({ state: false, error: message.isNumber });
     }
 
     return "ok";

@@ -84,7 +84,7 @@ const update = async (req, res) => {
         if (!application) {
             return res.status(404).json({ state: false, error: message.notFound });
         }
-        const request = validation(req, res)
+        const request = validationUp(req, res)
         if (request != "ok") {
             return request
         }
@@ -150,9 +150,23 @@ const validation = (req, res) => {
     }
     if (!idEmployee) {
         return res.status(400).json({ state: false, error: `id_employee ${message.requireData}` });
-    } else if (typeof idEmployee !== 'number') {
-        return res.status(400).json({ state: false, error: message.isNumber });
     }
+    return "ok";
+}
+
+const validationUp = (req, res) => {
+    const { codigo, descripcion, resumen, idEmployee } = req.body
+
+    if (!codigo) {
+        return res.status(400).json({ state: false, error: `codigo ${message.requireData}` });
+    }
+    if (!descripcion) {
+        return res.status(400).json({ state: false, error: `descripcion ${message.requireData}` });
+    }
+    if (!resumen) {
+        return res.status(400).json({ state: false, error: `resumen ${message.requireData}` });
+    }
+   
     return "ok";
 }
 
