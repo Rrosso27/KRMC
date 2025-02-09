@@ -1,0 +1,205 @@
+openapi: 3.0.0
+info:
+  title: API de Empleados y Aplicaciones
+  description: API para gestionar empleados y aplicaciones
+  version: 1.0.0
+servers:
+  - url: http://localhost:5000/api/
+paths:
+  /auth/login:
+    post:
+      summary: Iniciar sesión
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+      responses:
+        '200':
+          description: Usuario autenticado correctamente
+  /auth/register:
+    post:
+      summary: Registrar un nuevo usuario
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                nombre:
+                  type: string
+                email:
+                  type: string
+                password:
+                  type: string
+                rol:
+                  type: string
+      responses:
+        '201':
+          description: Usuario registrado correctamente
+  /employeeRoutes/:
+    post:
+      summary: Crear un empleado
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                fechaIngreso:
+                  type: string
+                nombre:
+                  type: string
+                salario:
+                  type: number
+      responses:
+        '201':
+          description: Empleado creado correctamente
+    get:
+      summary: Obtener todos los empleados
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Lista de empleados
+  /employeeRoutes/{id}:
+    get:
+      summary: Obtener un empleado por ID
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Detalles del empleado
+    put:
+      summary: Actualizar un empleado
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                fechaIngreso:
+                  type: string
+                nombre:
+                  type: string
+                salario:
+                  type: number
+      responses:
+        '200':
+          description: Empleado actualizado correctamente
+  /applicationRoutes/:
+    post:
+      summary: Crear una aplicación
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                codigo:
+                  type: string
+                descripcion:
+                  type: string
+                resumen:
+                  type: string
+                idEmployee:
+                  type: integer
+      responses:
+        '201':
+          description: Aplicación creada correctamente
+    get:
+      summary: Obtener todas las aplicaciones
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Lista de aplicaciones
+  /applicationRoutes/{id}:
+    get:
+      summary: Obtener una aplicación por ID
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Detalles de la aplicación
+    put:
+      summary: Actualizar una aplicación
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                codigo:
+                  type: string
+                descripcion:
+                  type: string
+                resumen:
+                  type: string
+                idEmployee:
+                  type: integer
+      responses:
+        '200':
+          description: Aplicación actualizada correctamente
+    delete:
+      summary: Eliminar una aplicación
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Aplicación eliminada correctamente
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

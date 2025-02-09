@@ -10,8 +10,8 @@
   "license": "ISC",
   "description": "",
   "scripts": {
-  "start": "node index.js",
-  "dev": "nodemon index.js"
+    "test": "PORT=5002 jest",
+    "start": "node index.js",
+    "dev": "nodemon index.js"
   }
-  
 }

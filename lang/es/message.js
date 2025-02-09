@@ -1,13 +1,24 @@
-export const errorServe = "Error interno del servidor"
-export const createdSuccess = "creado correctamente"
-export const errorInserting = "Error al insertar"
-export const credentialError = "Credenciales incorrectas"
-export const existingUser = "El correo ingresado esta en uso";
-export const requireData = "es obligatorio";
-export const isNumber = "debe de ser numerico"
-export const validateDateMin = "La fecha ingresada es anterior a la fecha actual";
-export const notFound = "Datos no encontrados";
-export const deleteData = "Datos eliminados correctamente "
-
+const errorServe = "Error interno del servidor"
+const createdSuccess = "creado correctamente"
+const errorInserting = "Error al insertar"
+const credentialError = "Credenciales incorrectas"
+const existingUser = "El correo ingresado esta en uso";
+const requireData = "es obligatorio";
+const isNumber = "debe de ser numerico"
+const validateDateMin = "La fecha ingresada es anterior a la fecha actual";
+const notFound = "Datos no encontrados";
+const deleteData = "Datos eliminados correctamente "
+module.exports = {
+    errorServe,
+    createdSuccess,
+    errorInserting,
+    credentialError,
+    existingUser,
+    requireData,
+    isNumber,
+    validateDateMin,
+    notFound,
+    deleteData,
+};
 
 

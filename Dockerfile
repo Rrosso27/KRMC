@@ -5,7 +5,9 @@ COPY package.json .
 RUN npm install express dotenv jsonwebtoken bcryptjs cors
 RUN npm install --save-dev nodemon jest supertest
 RUN npm install sequelize mysql2
+RUN npm install sequelize-mock
 RUN npm install
+
 
 COPY . .
 CMD ["npm", "start"]

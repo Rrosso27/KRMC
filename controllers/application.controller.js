@@ -1,6 +1,6 @@
 const { where } = require("../config/db");
 const message = require("../lang/es/message");
-const { Employee } = require('../models');
+const { Application } = require('../models');
 
 /**
  * store 
@@ -9,29 +9,30 @@ const { Employee } = require('../models');
  * @returns {json}
  */
 const store = async (req, res) => {
-    const { fechaIngreso, nombre, salario } = req.body
+    const { codigo, descripcion, resumen, idEmployee } = req.body
     try {
         const request = validation(req, res)
         if (request != "ok") {
             return request
         }
-        const employee = await Employee.create({
-            fecha_ingreso: fechaIngreso,
-            nombre,
-            salario,
+        await Application.create({
+            codigo,
+            descripcion,
+            resumen,
+            id_employee: idEmployee
         })
         return res.status(200).json({
             state: true,
-            message: `Empleado ${message.createdSuccess}`
+            message: `Solicitud ${message.createdSuccess}`
         })
     } catch (error) {
-        console.error(`${message.errorInserting} Empleado : ${error}`)
+        console.error(`${message.errorInserting} Solicitud : ${error}`)
         return res.status(500).json({ state: false, error: `${message.errorServe} erro ${error}` })
     }
 }
 
 /**
- * get By id employe
+ * get By id Application
  * @param {*} req 
  * @param {*} res 
  * @returns {json}
@@ -39,12 +40,12 @@ const store = async (req, res) => {
 const getById = async (req, res) => {
     const { id } = req.params;
     try {
-        const employee = await Employee.findOne({
+        const application = await Application.findOne({
             where: { id }
         });
         return res.status(200).json({
             state: true,
-            data: employee
+            data: application
         })
     } catch (error) {
         return res.status(500).json({ state: false, error: `${message.errorServe} erro ${error}` })
@@ -52,45 +53,46 @@ const getById = async (req, res) => {
 }
 
 /**
- * get employees
+ * get Applications
  * @param {*} req 
  * @param {*} res 
  * @returns {json}
  */
 const getAll = async (req, res) => {
     try {
-        const employee = await Employee.findAll();
+        const application = await Application.findAll();
         return res.status(200).json({
             state: true,
-            data: employee
+            data: application
         })
     } catch (error) {
         return res.status(500).json({ state: false, error: `${message.errorServe} erro ${error}` })
     }
 }
 /**
- * update employee
+ * update Application
  * @param {*} req 
  * @param {*} res 
  * @returns {json}
  */
 const update = async (req, res) => {
     const { id } = req.params;
-    const { fechaIngreso, nombre, salario } = req.body
+    const { codigo, descripcion, resumen, idEmployee } = req.body
+
     try {
-        const employee = await Employee.findByPk(id);
-        if (!employee) {
+        const application = await Application.findByPk(id);
+        if (!application) {
             return res.status(404).json({ state: false, error: message.notFound });
         }
-        const request = validation(req, res)
+        const request = validationUp(req, res)
         if (request != "ok") {
             return request
         }
-        await employee.update(
+        await Application.update(
             {
-                fecha_ingreso: fechaIngreso,
-                nombre,
-                salario,
+                codigo,
+                descripcion,
+                resumen,
             },
             { where: { id } }
         )
@@ -105,19 +107,19 @@ const update = async (req, res) => {
     }
 }
 /**
- * delete employee
+ * delete Application
  * @param {*} req 
  * @param {*} res 
  * @returns {json}
  */
-const deleteEmployee = async (req, res) => {
+const deleteApplication = async (req, res) => {
     const { id } = req.params;
     try {
-        const employee = await Employee.findByPk(id);
-        if (!employee) {
+        const application = await Application.findByPk(id);
+        if (!application) {
             return res.status(404).json({ state: false, error: message.notFound });
         }
-        await Employee.destroy({ where: { id } })
+        await Application.destroy({ where: { id } })
         return res.status(200).json({
             state: true,
             message: message.deleteData
@@ -135,22 +137,37 @@ const deleteEmployee = async (req, res) => {
  * @returns {json}
  */
 const validation = (req, res) => {
-    const { fechaIngreso, nombre, salario } = req.body
-    const fechaActual = new Date();
-    const fechaIngresada = new Date(fechaIngreso);
-    if (!fechaIngreso) {
-        return res.status(400).json({ state: false, error: `fecha de ingreso  ${message.requireData}` });
-    } else if (fechaIngresada < fechaActual) {
-        return res.status(400).json({ state: false, error: `fecha de ingreso  ${message.validateDate}` });
-    }
-    if (!nombre) {
-        return res.status(400).json({ state: false, error: `nombre ${message.requireData}` });
-    }
-    if (!salario) {
-        return res.status(400).json({ state: false, error: `salario ${message.requireData}` });
-    }
+    const { codigo, descripcion, resumen, idEmployee } = req.body
 
+    if (!codigo) {
+        return res.status(400).json({ state: false, error: `codigo ${message.requireData}` });
+    }
+    if (!descripcion) {
+        return res.status(400).json({ state: false, error: `descripcion ${message.requireData}` });
+    }
+    if (!resumen) {
+        return res.status(400).json({ state: false, error: `resumen ${message.requireData}` });
+    }
+    if (!idEmployee) {
+        return res.status(400).json({ state: false, error: `id_employee ${message.requireData}` });
+    }
     return "ok";
 }
 
-module.exports = { store, getById, getAll, update, deleteEmployee };
+const validationUp = (req, res) => {
+    const { codigo, descripcion, resumen, idEmployee } = req.body
+
+    if (!codigo) {
+        return res.status(400).json({ state: false, error: `codigo ${message.requireData}` });
+    }
+    if (!descripcion) {
+        return res.status(400).json({ state: false, error: `descripcion ${message.requireData}` });
+    }
+    if (!resumen) {
+        return res.status(400).json({ state: false, error: `resumen ${message.requireData}` });
+    }
+   
+    return "ok";
+}
+
+module.exports = { store, getById, getAll, update, deleteApplication };
